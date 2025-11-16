@@ -4,17 +4,21 @@ const path = require('path');
 // Create database file in the backend-node directory
 const DB_PATH = path.join(__dirname, 'tournament.db');
 
-const db = new sqlite3.Database(DB_PATH, (err) => {
-  if (err) {
-    console.error('Error opening database:', err);
-  } else {
-    console.log('Connected to SQLite database:', DB_PATH);
-    initializeDatabase();
-  }
-});
+let db;
+let dbReady = false;
 
 function initializeDatabase() {
-  db.serialize(() => {
+  return new Promise((resolve, reject) => {
+    db = new sqlite3.Database(DB_PATH, (err) => {
+      if (err) {
+        console.error('Error opening database:', err);
+        reject(err);
+        return;
+      }
+      
+      console.log('Connected to SQLite database:', DB_PATH);
+      
+      db.serialize(() => {
     // Reservations table
     db.run(`
       CREATE TABLE IF NOT EXISTS reservations (
@@ -81,7 +85,17 @@ function initializeDatabase() {
         'Join us for an exciting poker tournament with professional dealers and premium tables. Registration starts 30 minutes before the game.',
         datetime('now')
       )
-    `);
+    `, (err) => {
+      if (err) {
+        reject(err);
+      } else {
+        dbReady = true;
+        console.log('✅ Database initialized successfully');
+        resolve();
+      }
+    });
+      });
+    });
   });
 }
 
@@ -113,5 +127,5 @@ const dbAll = (sql, params = []) => {
   });
 };
 
-module.exports = { db, dbRun, dbGet, dbAll };
+module.exports = { db, dbRun, dbGet, dbAll, initializeDatabase };
 
