@@ -1,0 +1,26 @@
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+*.md
+.DS_Store
+.vscode
+.idea
+dist
+build
+coverage
+*.log
+
+# Frontend specific
+frontend-vue/node_modules
+frontend-vue/dist
+frontend-vue/.env.local
+
+# Backend specific
+backend-node/node_modules
+backend-node/tournament.db
+
+# Java backend (not needed)
+backend-java
+

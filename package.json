@@ -1,0 +1,19 @@
+{
+  "name": "poker-tournament-reservation",
+  "version": "0.1.0",
+  "description": "Monorepo for Poker Tournament Reservation System",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install --prefix backend-node && npm install --prefix frontend-vue",
+    "dev": "npm run dev --prefix frontend-vue",
+    "dev:node": "npm run dev --prefix backend-node",
+    "dev:vue": "npm run dev --prefix frontend-vue",
+    "dev:all": "echo 'Starting both servers... Run in separate terminals: npm run dev:node and npm run dev:vue'",
+    "build:vue": "npm run build --prefix frontend-vue",
+    "java:run": "cd backend-java && mvn spring-boot:run"
+  },
+  "workspaces": [
+    "backend-node",
+    "frontend-vue"
+  ]
+}
